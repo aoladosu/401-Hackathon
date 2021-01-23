@@ -69,34 +69,52 @@ def listEvents(events):
     
     return html
 
+def showEvent(event, username, resultString):
+    # display one event
+    
+    html = open("pages/header.html",'r').read()
+    
+    if (resultString != ""):
+        html += '<p style="color:red">{}</p>\n'.format(resultString)
+    
+    html += '''
+                    <div>
+                        <h2>{}</h2>
+                        <br>
+                        <p>By: {}</p>
+                        <p>Date: {}</p>
+                        <p>Location: {}</p>
+                        <p>Items: {}</p>
+                        <br>
+                        <p><strong>Summary: </strong>{}</p>            
+                    </div>   
+                    
+                    <div class="d-flex justify-content-start">
+                        <form action="/pledge/{}" method="post">
+                            <button type="submit" class="btn btn-outline-success">Pledge</button>
+                        </form>
+                    </div>
+                    
+                </body>       
+            </html>
+            '''.format(event[1], username, event[3], event[4], event[5], event[2], event[0])
+    
+    return html
 
 
-          # <div class="row">
-          #   <div class="col-lg-3" style="text-align:center;background-color:gray;">
-          #     <a href="hello">Clothes Drive</a>
-          #   </div>
-          #   <div class="col-lg-3" style="text-align:center;background-color:gray;">
-          #     11-02-16
-          #   </div>
-          #   <div class="col-lg-3" style="text-align:center;background-color:gray;">
-          #     Edmonton
-          #   </div>
-          #   <div class="col-lg-3" style="text-align:center;background-color:gray;">
-          #     Clothes, shirts, socks
-          #   </div>
-          # </div>
-          
-          # <div class="row">
-          #   <div class="col-lg-3" style="text-align:center;background-color:white;">
-          #     <a href="hello">Clothes Drive</a>
-          #   </div>
-          #   <div class="col-lg-2" style="text-align:center;background-color:white;">
-          #     11-02-16
-          #   </div>
-          #   <div class="col-lg-3" style="text-align:center;background-color:white;">
-          #     Edmonton
-          #   </div>
-          #   <div class="col-lg-3" style="text-align:center;background-color:white;">
-          #     Clothes, shirts, socks
-          #   </div>
-          # </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

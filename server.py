@@ -31,7 +31,7 @@ def loginPage():
 
     if (checkCookie()):
         # already logged in
-        return redirect(url_for('events'))
+        return redirect(url_for('listEvents'))
         
     try:
         # return log in page
@@ -78,7 +78,7 @@ def login():
     else:
         # create a cookie
         cookie = db.createCookie(userID[0])
-        response = redirect(url_for('events'), 302)
+        response = redirect(url_for('listEvents'), 302)
         response.set_cookie("session", cookie)
         return response
     
@@ -111,15 +111,49 @@ def listEvents():
     return html, 200
 
 @app.route("/event/<ID>", methods=["GET"])
-def showEvent(eventID):
+def showEvent(ID):
     
     # must be logged in
-    if (not checkCookie()):
+    userID = checkCookie()
+    if (not userID):
         return isNotLoggedIn()
     
-    event = db.getEvent(eventID)
+    username = db.getUsername(userID)
+    event = db.getEvent(ID)
+    if (event == None):
+        return redirect(url_for('listEvents'))
+    html = htmlMaker.showEvent(event, username, '')
+    return html, 200
+  
+@app.route("/pledge/<ID>", methods=["POST"])
+def pledge(ID):
+    # pledge to donate an item
     
+    # must be logged in
+    userID = checkCookie()
+    if (not userID):
+        return isNotLoggedIn()
     
+    if (db.createPledge(userID, ID)):
+        resultString = "You've already pledged to this event!"
+    else:
+        resultString = "Thank you for pledging to donate to this event!"
+        
+    username = db.getUsername(userID)    
+    event = db.getEvent(ID)
+    if (event == None):
+        return redirect(url_for('listEvents'))    
+    html = htmlMaker.showEvent(event, username, resultString)
+    return html, 200
+    
+@app.route("/profile", methods=["GET"])
+def profile(ID):
+    # show users profile
+    
+    # must be logged in
+    userID = checkCookie()
+    if (not userID):
+        return isNotLoggedIn()
     
 if __name__ == "__main__":
     app.run()    

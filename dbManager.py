@@ -24,7 +24,6 @@ class dbManager():
     
     def loginUser(self, username, password):
         # check that given password matches in database
-        
         values = (username, password)
         self.cursor.execute("""SELECT id FROM Users WHERE username=? AND password=?""", values)
         userID = self.cursor.fetchone()
@@ -35,7 +34,6 @@ class dbManager():
     
     def createCookie(self, userID):
         # create a cookie for the login
-        
         letters = string.ascii_letters
         cookie = ''.join(random.choice(letters) for i in range(5))
         values = (userID, cookie)
@@ -48,7 +46,6 @@ class dbManager():
             
     def checkCookie(self, cookie):
         # check if a cookie is in the database
-        
         values = (cookie,)
         self.cursor.execute("""SELECT userID FROM Cookies WHERE cookie=?""", values)
         userID = self.cursor.fetchone()
@@ -74,6 +71,23 @@ class dbManager():
         self.cursor.execute("""SELECT * FROM Events WHERE id=?""", values)
         event = self.cursor.fetchone()
         return event
+    
+    def createPledge(self, userID, eventID):
+        # create a pledge in database, return if there is an error
+        values = (userID, eventID)
+        try:
+            self.cursor.execute("""INSERT INTO Pledges VALUES (?,?)""", values)
+            self.conn.commit()
+            return False
+        except:
+            return True
+        
+    def getUsername(self, uid):
+        # return user name
+        values = (uid,)
+        self.cursor.execute("""SELECT id FROM Users WHERE id=?""", values)
+        event = self.cursor.fetchone()
+        return event[0]  
         
 
     
