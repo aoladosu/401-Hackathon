@@ -146,7 +146,7 @@ def pledge(ID):
     html = htmlMaker.showEvent(event, username, resultString)
     return html, 200
     
-@app.route("/profile", methods=["GET"])
+@app.route("/profile/<ID>", methods=["GET"])
 def profile(ID):
     # show users profile
     
@@ -154,6 +154,27 @@ def profile(ID):
     userID = checkCookie()
     if (not userID):
         return isNotLoggedIn()
+    if ((ID == '0') or (ID == '0?')):
+        ID = userID
+    
+    username = db.getUsername(ID)
+    if (username == None):
+        return redirect(url_for('listEvents'))
+    pledges = db.getpledges(ID)
+    events = db.getEventsForUser(ID)
+    html = htmlMaker.showProfile(username, events, pledges, int(ID)==userID)
+    return html, 200
+    
+@app.route("/newEvent", methods=["GET"])
+def newEvent():    
+    # create a new event
+    
+    # must be logged in
+    userID = checkCookie()
+    if (not userID):
+        return isNotLoggedIn()
+    
+    
     
 if __name__ == "__main__":
     app.run()    

@@ -14,13 +14,13 @@
     
         <div class="d-flex justify-content-end">
             <form action="/events">
-                <button type="submit" class="btn btn-outline-primary" value="eventsPage">Events</button>
+                <button type="submit" class="btn btn-primary" value="eventsPage">All Events</button>
             </form>
-            <form action="/profile">
-                <button type="submit" class="btn btn-outline-secondary" value="profile">Profile</button>
+            <form action="/profile/0">
+                <button type="submit" class="btn btn-secondary" value="profile">My Profile</button>
             </form>
             <form action="/logout" method="post">
-                <button type="submit" class="btn btn-outline-danger">Log out</button>
+                <button type="submit" class="btn btn-danger">Log out</button>
             </form>
         </div>
         
@@ -28,7 +28,7 @@
             <h1>Events</h1>
             <form action="/search" method="post">
                 <input type="text" name="search">
-                <button type="submit" name="searchButton" value="pressed" class="btn btn-outline-info">Search</button>
+                <button type="submit" name="searchButton" value="pressed" class="btn btn-info">Search</button>
             </form>
         </div>
     
