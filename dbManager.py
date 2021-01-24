@@ -123,17 +123,19 @@ class dbManager():
                     title LIKE '%{}%'
                     OR location LIKE '%{}%'
                     OR items LIKE '%{}%'
-                '''.format(keywords[0],keywords[0],keywords[0])
+                    OR summary LIKE '%{}%'
+                '''.format(keywords[0], keywords[0], keywords[0], keywords[0])
         criteria = '''
                     OR title LIKE '%{}%'
                     OR location LIKE '%{}%'
                     OR items LIKE '%{}%'
+                    OR summary LIKE '%{}%'
                     ''' 
         keywords.pop(0)
                     
         # build query            
         for keyword in keywords:
-            query += criteria.format(keyword,keyword,keyword)
+            query += criteria.format(keyword,keyword,keyword, keyword)
         query += ';'
         
         self.cursor.execute(query)
