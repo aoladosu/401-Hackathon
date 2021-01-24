@@ -250,8 +250,15 @@ def showProfile(username, events, pledges, isUser):
     html += "\n</body></html>\n"
     return html
 
-def createEvent():
-    html = open("pages/header.html",'r').read()
+def createEvent(resultString):
+    # create new event for database
+    html = open("pages/header.html",'r').read() + '<br><br>'
+    
+    if (resultString != ''):
+        html += '<div style="color:red;"><center>{}</center></div><br>'.format(resultString)
+    
+    html += open("pages/newEventPartial.html",'r').read()
+    return html
 
 
 

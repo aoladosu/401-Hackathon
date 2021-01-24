@@ -25,10 +25,10 @@ class dbManager():
     def loginUser(self, username, password):
         # check that given password matches in database
         values = (username, password)
-        self.cursor.execute("""SELECT id FROM Users WHERE username=? AND password=?""", values)
+        self.cursor.execute("""SELECT id FROM Users WHERE username=? AND password=?;""", values)
         userID = self.cursor.fetchone()
         if (userID != None):        
-            self.cursor.execute("""DELETE FROM Cookies WHERE userID=?""", userID)
+            self.cursor.execute("""DELETE FROM Cookies WHERE userID=?;""", userID)
             self.conn.commit()
         return userID
     
@@ -38,7 +38,7 @@ class dbManager():
         cookie = ''.join(random.choice(letters) for i in range(5))
         values = (userID, cookie)
         try:
-            self.cursor.execute("""INSERT INTO Cookies VALUES (?,?)""", values)
+            self.cursor.execute("""INSERT INTO Cookies VALUES (?,?);""", values)
             self.conn.commit()
             return cookie
         except:
@@ -47,7 +47,7 @@ class dbManager():
     def checkCookie(self, cookie):
         # check if a cookie is in the database
         values = (cookie,)
-        self.cursor.execute("""SELECT userID FROM Cookies WHERE cookie=?""", values)
+        self.cursor.execute("""SELECT userID FROM Cookies WHERE cookie=?;""", values)
         userID = self.cursor.fetchone()
         if (userID != None):
             userID = userID[0]
@@ -56,19 +56,19 @@ class dbManager():
     def deleteCookie(self, cookie):
         # remove cookie
         values = (cookie,)
-        self.cursor.execute("""DELETE FROM Cookies WHERE cookie=?""", values)
+        self.cursor.execute("""DELETE FROM Cookies WHERE cookie=?;""", values)
         self.conn.commit()
         
     def getAllEvents(self):
         # return a list of events
-        self.cursor.execute("""SELECT id, title, date, location, items FROM Events""")
+        self.cursor.execute("""SELECT id, title, date, location, items FROM Events;""")
         events = self.cursor.fetchall()
         return events
     
     def getEvent(self, eid):
         # return a list of events
         values = (eid,)
-        self.cursor.execute("""SELECT * FROM Events WHERE id=?""", values)
+        self.cursor.execute("""SELECT * FROM Events WHERE id=?;""", values)
         event = self.cursor.fetchone()
         return event
     
@@ -76,7 +76,7 @@ class dbManager():
         # create a pledge in database, return if there is an error
         values = (userID, eventID)
         try:
-            self.cursor.execute("""INSERT INTO Pledges VALUES (?,?)""", values)
+            self.cursor.execute("""INSERT INTO Pledges VALUES (?,?);""", values)
             self.conn.commit()
             return False
         except:
@@ -85,10 +85,35 @@ class dbManager():
     def getUsername(self, uid):
         # return user name
         values = (uid,)
-        self.cursor.execute("""SELECT id FROM Users WHERE id=?""", values)
-        event = self.cursor.fetchone()
-        return event[0]  
+        self.cursor.execute("""SELECT username FROM Users WHERE id=?;""", values)
+        username = self.cursor.fetchone()
+        if (username != None):
+            return username[0] 
+        return None
+    
+    def getpledges(self, ID):
+        # return pledges
+        values = (ID,)
+        self.cursor.execute("""SELECT e.id, e.title FROM Events e, Pledges p WHERE p.userID=? AND p.eventID=e.id;""", values)
+        pledges = self.cursor.fetchall()
+        return pledges
+    
+    def getEventsForUser(self, ID):
+        # return events that a user has made
+        values = (ID,)
+        self.cursor.execute("""SELECT * FROM Events WHERE userID=?;""", values)
+        event = self.cursor.fetchall()
+        return event
         
+    def createEvent(self, userID, title, summary, date, location, items):
+        # create event for a user, return if there is an error
+        values = (userID, title, summary, date, location, items)
+        try:
+            self.cursor.execute("""INSERT INTO Events (userID, title, summary, date, location, items) VALUES (?,?,?,?,?,?);""", values)
+            self.conn.commit()
+            return False
+        except:
+            return True
 
     
 

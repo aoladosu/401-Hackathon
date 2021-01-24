@@ -1,8 +1,8 @@
 import flask
 from flask import Flask, request, redirect, url_for
-import json
 import dbManager
 import htmlMaker
+from datetime import *
 app = Flask(__name__)
 app.debug = True
 db = dbManager.dbManager()
@@ -174,6 +174,43 @@ def newEvent():
     if (not userID):
         return isNotLoggedIn()
     
+    html = htmlMaker.createEvent('')
+    return html, 200
+    
+@app.route("/createEvent", methods=["POST"])
+def createEvent():    
+    # create a new event
+    
+    # must be logged in
+    userID = checkCookie()
+    if (not userID):
+        return isNotLoggedIn()
+    
+    # get data
+    title = request.form["title"]
+    summary = request.form["summary"]
+    eventDate = request.form["date"]
+    location = request.form["location"]
+    items = request.form["items"]
+
+    # check for all info
+    if (not title or not summary or not eventDate or not location or not items):
+        html = htmlMaker.createEvent('Not enough information provided')
+        return html, 200
+    
+    # check for date
+    dateSplit = eventDate.split("-")
+    d1 = date(int(dateSplit[0]),int(dateSplit[1]),int(dateSplit[2]))
+    d2 = date.today()
+    if (d2>d1):
+        html = htmlMaker.createEvent('Cannot create an event in the past')
+        return html, 200
+    
+    if (db.createEvent(userID, title, summary, eventDate, location, items)):
+        html = htmlMaker.createEvent('A similar event has already been created')
+    else:
+        html = htmlMaker.createEvent('Event created!')
+    return html, 200
     
     
 if __name__ == "__main__":
