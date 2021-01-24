@@ -17,9 +17,6 @@ def checkCookie():
         
 def isNotLoggedIn():
     # not logged in return error page
-    file = open("pages/loginFail.html", 'r')
-    html = file.read()
-    file.close()
     errorString = "You must be logged in"
     html += htmlMaker.loginFailMSG(errorString)
     return html, 200
@@ -35,9 +32,7 @@ def loginPage():
         
     try:
         # return log in page
-        file = open("pages/login.html", 'r')
-        html = file.read()
-        file.close()
+        html = htmlMaker.loginPage()
     except:
         return '', 404
     return html, 200
@@ -70,10 +65,7 @@ def login():
     
     if (error):
         # return error page
-        file = open("pages/loginFail.html", 'r')
-        html = file.read()
-        file.close()
-        html += htmlMaker.loginFailMSG(errorString)
+        html = htmlMaker.loginFailMSG(errorString)
         return html, 200
     else:
         # create a cookie
@@ -170,7 +162,7 @@ def profile(ID):
         return redirect(url_for('listEvents'))
     pledges = db.getpledges(ID)
     events = db.getEventsForUser(ID)
-    html = htmlMaker.showProfile(username, events, pledges, int(ID)==userID)
+    html = htmlMaker.showProfile(username, events, pledges)
     return html, 200
     
 @app.route("/newEvent", methods=["GET"])

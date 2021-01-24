@@ -9,19 +9,24 @@
     </head>   
      
      
-    <body>
+    <body width="100%" style="background:beige;">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
     
+        <div style="background:black;" width="100%">
         <div class="d-flex justify-content-end">
             <form action="/events">
-                <button type="submit" class="btn btn-primary" value="eventsPage">All Events</button>
+                <button type="submit" class="btn btn-outline-primary" value="eventsPage">All Events</button>
+            </form>
+            <form action="/newEvent" method="get">
+                <button type="submit" class="btn btn-outline-success">Create New Event</button>
             </form>
             <form action="/profile/0">
-                <button type="submit" class="btn btn-secondary" value="profile">My Profile</button>
+                <button type="submit" class="btn btn-outline-secondary" value="profile">My Profile</button>
             </form>
             <form action="/logout" method="post">
-                <button type="submit" class="btn btn-danger">Log out</button>
+                <button type="submit" class="btn btn-outline-danger">Log out</button>
             </form>
+        </div>
         </div>
         
 

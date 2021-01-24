@@ -9,20 +9,24 @@
     </head>   
      
      
-    <body height="100%">
+    <body height="100%" width="100%" style="background:beige;">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+        
+        <br>
+        <div><h1><center>DONATE AWAY!</center></h1></div>
+        <br><br>
     
-        <div class="d-flex justify-content-center align-items-center">
+        
+        <div class="d-flex justify-content-center">
+            <div style="border:solid;position:absolute;padding:40px;">
             <form action="/login" method="post">
                 <label for="username">Username:</label><br>
-                <input type="text" name="username"><br>
+                <input type="text" name="username"><br><br>
                 <label for="pass">Password:</label><br>
-                <input type="password" name="pass"><br>
+                <input type="password" name="pass"><br><br>
                 <br>
                 <button type="submit" name="loginType" value="login" class="btn btn-primary">Log In</button>
                 <button type="submit" name="loginType" value="create" class="btn btn-secondary">Sign Up</button>
             </form>
+            </div>
         </div>
-
-    </body>
-</html>
