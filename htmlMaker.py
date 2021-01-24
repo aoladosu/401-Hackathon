@@ -12,18 +12,25 @@ def loginFailMSG(errorString):
     return string
 
 
-def listEvents(events):
+def listEvents(events, search):
     # event = (id, title, date, location, items)
     
     html = open('pages/eventsList.html','r').read()
     
     if (len(events) == 0):
         # no events
-        html += '''</div>\n
-                <h2><center>There are currently no events</center></h2>
-                </body>
-             </html>
-            '''
+        if (not search):
+            html += '''</div>\n
+                    <h2><center>There are currently no events</center></h2>
+                    </body>
+                 </html>
+                '''
+        else:
+            html += '''</div>\n
+                    <h2><center>No events match your search</center></h2>
+                    </body>
+                 </html>
+                '''
         return html
         
     odd = True

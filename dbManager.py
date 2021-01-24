@@ -114,6 +114,31 @@ class dbManager():
             return False
         except:
             return True
+        
+    def searchEvents(self, keywords):
+        # return events matching keywords
+        
+        
+        query = '''SELECT id, title, date, location, items FROM Events WHERE
+                    title LIKE '%{}%'
+                    OR location LIKE '%{}%'
+                    OR items LIKE '%{}%'
+                '''.format(keywords[0],keywords[0],keywords[0])
+        criteria = '''
+                    OR title LIKE '%{}%'
+                    OR location LIKE '%{}%'
+                    OR items LIKE '%{}%'
+                    ''' 
+        keywords.pop(0)
+                    
+        # build query            
+        for keyword in keywords:
+            query += criteria.format(keyword,keyword,keyword)
+        query += ';'
+        
+        self.cursor.execute(query)
+        events = self.cursor.fetchall()
+        return events
 
     
 

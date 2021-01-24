@@ -95,19 +95,27 @@ def logout():
     return redirect(url_for('loginPage'))
     
 
-@app.route("/events", methods=["GET"])
+@app.route("/events", methods=["GET", "POST"])
 def listEvents():
     # list all events
     
     # must be logged in
     if (not checkCookie()):
         return isNotLoggedIn()
-
-    try:
-        events = db.getAllEvents()
-        html = htmlMaker.listEvents(events)
-    except:
-        return '', 404
+    
+    if ((request.method == "GET") or (not request.form["keywords"])):
+        try:
+            events = db.getAllEvents()
+            html = htmlMaker.listEvents(events, False)
+        except:
+            return '', 404
+        
+    else:
+        # a search
+        keywords = request.form["keywords"].split()
+        events = db.searchEvents(keywords)
+        html = htmlMaker.listEvents(events, True)
+        
     return html, 200
 
 @app.route("/event/<ID>", methods=["GET"])
